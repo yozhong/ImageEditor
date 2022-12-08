@@ -19,6 +19,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->actionExit, SIGNAL(triggered(bool)), QApplication::instance(), SLOT(quit()));
     connect(ui->actionOpen, SIGNAL(triggered(bool)), this, SLOT(openImage()));
+    connect(ui->actionZoom_in, SIGNAL(triggered(bool)), this, SLOT(zoomIn()));
+    connect(ui->actionZoom_out, SIGNAL(triggered(bool)), this, SLOT(zoomOut()));
 }
 
 MainWindow::~MainWindow()
@@ -55,4 +57,14 @@ void MainWindow::showImage(QString path)
         .arg(image.height())
         .arg(QFile(path).size());
     ui->statusLabel->setText(status);
+}
+
+void MainWindow::zoomIn()
+{
+    ui->graphicsView->scale(1.2, 1.2);
+}
+
+void MainWindow::zoomOut()
+{
+    ui->graphicsView->scale(1 / 1.2, 1 / 1.2);
 }

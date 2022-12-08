@@ -25,5 +25,7 @@ private:
 
 private slots:
     void openImage();
+    void zoomIn();
+    void zoomOut();
 };
 #endif // MAINWINDOW_H
