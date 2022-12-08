@@ -13,6 +13,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->viewToolBar->addAction(ui->actionZoom_out);
     ui->viewToolBar->addAction(ui->actionPrevious_Image);
     ui->viewToolBar->addAction(ui->actionNext_Image);
+
+    connect(ui->actionExit, SIGNAL(triggered(bool)), QApplication::instance(), SLOT(quit()));
 }
 
 MainWindow::~MainWindow()
