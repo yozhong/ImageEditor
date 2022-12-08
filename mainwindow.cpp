@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionOpen, SIGNAL(triggered(bool)), this, SLOT(openImage()));
     connect(ui->actionZoom_in, SIGNAL(triggered(bool)), this, SLOT(zoomIn()));
     connect(ui->actionZoom_out, SIGNAL(triggered(bool)), this, SLOT(zoomOut()));
+    connect(ui->actionSave_as, SIGNAL(triggered(bool)), this, SLOT(saveAs()));
 }
 
 MainWindow::~MainWindow()
@@ -45,7 +46,7 @@ void MainWindow::showImage(QString path)
 {
     QPixmap image(path);
     imageScene->clear();
-    imageScene->addPixmap(image);
+    currentImage = imageScene->addPixmap(image);
     imageScene->update();
 
     ui->graphicsView->resetTransform();
@@ -67,4 +68,28 @@ void MainWindow::zoomIn()
 void MainWindow::zoomOut()
 {
     ui->graphicsView->scale(1 / 1.2, 1 / 1.2);
+}
+
+void MainWindow::saveAs()
+{
+    if (currentImage == nullptr) {
+        QMessageBox::information(this, "Information", "Nothing to save.");
+        return;
+    }
+
+    QFileDialog dialog(this);
+    dialog.setWindowTitle("Save Image As ...");
+    dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.setAcceptMode(QFileDialog::AcceptSave);
+    dialog.setNameFilter(tr("Images (*.png *.bmp *.jpg)"));
+
+    QStringList fileNames;
+    if (dialog.exec()) {
+        fileNames = dialog.selectedFiles();
+        if(QRegExp(".+\\.(png|bmp|jpg)").exactMatch(fileNames.at(0))) {
+            currentImage->pixmap().save(fileNames.at(0));
+        } else {
+            QMessageBox::information(this, "Information", "Save error: bad format or filename.");
+        }
+    }
 }
