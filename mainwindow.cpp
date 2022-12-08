@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     imageScene = new QGraphicsScene(this);
     ui->graphicsView->setScene(imageScene);
 
+    // connect the signals and slots
     connect(ui->actionExit, SIGNAL(triggered(bool)), QApplication::instance(), SLOT(quit()));
     connect(ui->actionOpen, SIGNAL(triggered(bool)), this, SLOT(openImage()));
     connect(ui->actionZoom_in, SIGNAL(triggered(bool)), this, SLOT(zoomIn()));
@@ -24,6 +25,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionSave_as, SIGNAL(triggered(bool)), this, SLOT(saveAs()));
     connect(ui->actionPrevious_Image, SIGNAL(triggered(bool)), this, SLOT(prevImage()));
     connect(ui->actionNext_Image, SIGNAL(triggered(bool)), this, SLOT(nextImage()));
+
+    setupShortcuts();
 }
 
 MainWindow::~MainWindow()
@@ -131,4 +134,23 @@ void MainWindow::nextImage()
     } else {
         QMessageBox::information(this, "Information", "Current image is the last one.");
     }
+}
+
+void MainWindow::setupShortcuts()
+{
+    QList<QKeySequence> shortcuts;
+    shortcuts << Qt::Key_Plus << Qt::Key_Equal;
+    ui->actionZoom_in->setShortcuts(shortcuts);
+
+    shortcuts.clear();
+    shortcuts << Qt::Key_Minus << Qt::Key_Underscore;
+    ui->actionZoom_out->setShortcuts(shortcuts);
+
+    shortcuts.clear();
+    shortcuts << Qt::Key_Up << Qt::Key_Left;
+    ui->actionPrevious_Image->setShortcuts(shortcuts);
+
+    shortcuts.clear();
+    shortcuts << Qt::Key_Down << Qt::Key_Right;
+    ui->actionNext_Image->setShortcuts(shortcuts);
 }

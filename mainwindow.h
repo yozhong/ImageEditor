@@ -23,6 +23,7 @@ public:
 private:
     Ui::MainWindow *ui;
     void showImage(QString path);
+    void setupShortcuts();
 
     QGraphicsScene *imageScene;
     QGraphicsPixmapItem *currentImage;
