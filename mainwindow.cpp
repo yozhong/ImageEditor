@@ -14,6 +14,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->viewToolBar->addAction(ui->actionPrevious_Image);
     ui->viewToolBar->addAction(ui->actionNext_Image);
 
+    imageScene = new QGraphicsScene(this);
+    ui->graphicsView->setScene(imageScene);
+
     connect(ui->actionExit, SIGNAL(triggered(bool)), QApplication::instance(), SLOT(quit()));
     connect(ui->actionOpen, SIGNAL(triggered(bool)), this, SLOT(openImage()));
 }
@@ -25,5 +28,31 @@ MainWindow::~MainWindow()
 
 void MainWindow::openImage()
 {
-    qDebug() << "slot openImage is called.";
+    QFileDialog dialog(this);
+    dialog.setWindowTitle("Open Image");
+    dialog.setFileMode(QFileDialog::ExistingFile);
+    dialog.setNameFilter(tr("Images (*.png *.bmp *.jpg)"));
+    QStringList filePaths;
+    if (dialog.exec()) {
+        filePaths = dialog.selectedFiles();
+        showImage(filePaths.at(0));
+    }
+}
+
+void MainWindow::showImage(QString path)
+{
+    QPixmap image(path);
+    imageScene->clear();
+    imageScene->addPixmap(image);
+    imageScene->update();
+
+    ui->graphicsView->resetTransform();
+    ui->graphicsView->setSceneRect(image.rect());
+
+    QString status = QString("%1, %2x%3, %4Bytes")
+        .arg(path)
+        .arg(image.width())
+        .arg(image.height())
+        .arg(QFile(path).size());
+    ui->statusLabel->setText(status);
 }
