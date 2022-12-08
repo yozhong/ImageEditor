@@ -6,8 +6,7 @@
 #include <QGraphicsPixmapItem>
 #include <QFileDialog>
 #include <QMessageBox>
-#include <QRegExp>
-
+#include <QRegularExpression>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -27,12 +26,14 @@ private:
 
     QGraphicsScene *imageScene;
     QGraphicsPixmapItem *currentImage;
+    QString currentImagePath;
 
 private slots:
     void openImage();
     void zoomIn();
     void zoomOut();
     void saveAs();
-
+    void prevImage();
+    void nextImage();
 };
 #endif // MAINWINDOW_H

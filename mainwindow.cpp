@@ -22,6 +22,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionZoom_in, SIGNAL(triggered(bool)), this, SLOT(zoomIn()));
     connect(ui->actionZoom_out, SIGNAL(triggered(bool)), this, SLOT(zoomOut()));
     connect(ui->actionSave_as, SIGNAL(triggered(bool)), this, SLOT(saveAs()));
+    connect(ui->actionPrevious_Image, SIGNAL(triggered(bool)), this, SLOT(prevImage()));
+    connect(ui->actionNext_Image, SIGNAL(triggered(bool)), this, SLOT(nextImage()));
 }
 
 MainWindow::~MainWindow()
@@ -48,6 +50,7 @@ void MainWindow::showImage(QString path)
     imageScene->clear();
     currentImage = imageScene->addPixmap(image);
     imageScene->update();
+    currentImagePath = path;
 
     ui->graphicsView->resetTransform();
     ui->graphicsView->setSceneRect(image.rect());
@@ -86,10 +89,46 @@ void MainWindow::saveAs()
     QStringList fileNames;
     if (dialog.exec()) {
         fileNames = dialog.selectedFiles();
-        if(QRegExp(".+\\.(png|bmp|jpg)").exactMatch(fileNames.at(0))) {
+        static QRegularExpression re(".+\\.(png|bmp|jpg)");
+
+        if(re.match(fileNames.at(0)).hasMatch()) {
             currentImage->pixmap().save(fileNames.at(0));
         } else {
             QMessageBox::information(this, "Information", "Save error: bad format or filename.");
         }
+    }
+}
+
+void MainWindow::prevImage()
+{
+    QFileInfo current(currentImagePath);
+    QDir dir = current.absoluteDir();
+
+    QStringList nameFilters;
+    nameFilters << "*.png" << "*.bmp" << "*.jpg";
+
+    QStringList fileNames = dir.entryList(nameFilters, QDir::Files, QDir::Name);
+    int idx = fileNames.indexOf(QRegularExpression(QRegularExpression::escape(current.fileName())));
+    if(idx > 0) {
+        showImage(dir.absoluteFilePath(fileNames.at(idx - 1)));
+    } else {
+        QMessageBox::information(this, "Information", "Current image is the first one.");
+    }
+}
+
+void MainWindow::nextImage()
+{
+    QFileInfo current(currentImagePath);
+    QDir dir = current.absoluteDir();
+
+    QStringList nameFilters;
+    nameFilters << "*.png" << "*.bmp" << "*.jpg";
+
+    QStringList fileNames = dir.entryList(nameFilters, QDir::Files, QDir::Name);
+    int idx = fileNames.indexOf(QRegularExpression(QRegularExpression::escape(current.fileName())));
+    if(idx < fileNames.size() - 1) {
+        showImage(dir.absoluteFilePath(fileNames.at(idx + 1)));
+    } else {
+        QMessageBox::information(this, "Information", "Current image is the last one.");
     }
 }
