@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->viewToolBar->addAction(ui->actionNext_Image);
 
     connect(ui->actionExit, SIGNAL(triggered(bool)), QApplication::instance(), SLOT(quit()));
+    connect(ui->actionOpen, SIGNAL(triggered(bool)), this, SLOT(openImage()));
 }
 
 MainWindow::~MainWindow()
@@ -22,3 +23,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::openImage()
+{
+    qDebug() << "slot openImage is called.";
+}
