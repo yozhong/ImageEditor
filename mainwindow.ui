@@ -52,6 +52,8 @@
     <addaction name="actionZoom_out"/>
     <addaction name="actionPrevious_Image"/>
     <addaction name="actionNext_Image"/>
+    <addaction name="actionRotate_right"/>
+    <addaction name="actionRotate_left"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
@@ -142,6 +144,22 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionRotate_right">
+   <property name="icon">
+    <iconset theme="object-rotate-right"/>
+   </property>
+   <property name="text">
+    <string>Rotate right</string>
+   </property>
+  </action>
+  <action name="actionRotate_left">
+   <property name="icon">
+    <iconset theme="object-rotate-left"/>
+   </property>
+   <property name="text">
+    <string>Rotate left</string>
    </property>
   </action>
  </widget>

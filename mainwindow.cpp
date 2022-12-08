@@ -13,6 +13,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->viewToolBar->addAction(ui->actionZoom_out);
     ui->viewToolBar->addAction(ui->actionPrevious_Image);
     ui->viewToolBar->addAction(ui->actionNext_Image);
+    ui->viewToolBar->addAction(ui->actionRotate_left);
+    ui->viewToolBar->addAction(ui->actionRotate_right);
 
     imageScene = new QGraphicsScene(this);
     ui->graphicsView->setScene(imageScene);
@@ -25,6 +27,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionSave_as, SIGNAL(triggered(bool)), this, SLOT(saveAs()));
     connect(ui->actionPrevious_Image, SIGNAL(triggered(bool)), this, SLOT(prevImage()));
     connect(ui->actionNext_Image, SIGNAL(triggered(bool)), this, SLOT(nextImage()));
+    connect(ui->actionRotate_left, SIGNAL(triggered(bool)), this, SLOT(rotateLeft()));
+    connect(ui->actionRotate_right, SIGNAL(triggered(bool)), this, SLOT(rotateRight()));
 
     setupShortcuts();
 }
@@ -74,6 +78,16 @@ void MainWindow::zoomIn()
 void MainWindow::zoomOut()
 {
     ui->graphicsView->scale(1 / 1.2, 1 / 1.2);
+}
+
+void MainWindow::rotateRight()
+{
+    ui->graphicsView->rotate(90);
+}
+
+void MainWindow::rotateLeft()
+{
+    ui->graphicsView->rotate(-90);
 }
 
 void MainWindow::saveAs()

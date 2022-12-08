@@ -36,5 +36,7 @@ private slots:
     void saveAs();
     void prevImage();
     void nextImage();
+    void rotateRight();
+    void rotateLeft();
 };
 #endif // MAINWINDOW_H
