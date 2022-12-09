@@ -38,5 +38,6 @@ private slots:
     void nextImage();
     void rotateRight();
     void rotateLeft();
+    void blurImage();
 };
 #endif // MAINWINDOW_H

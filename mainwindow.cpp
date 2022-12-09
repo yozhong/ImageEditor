@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->viewToolBar->addAction(ui->actionNext_Image);
     ui->viewToolBar->addAction(ui->actionRotate_left);
     ui->viewToolBar->addAction(ui->actionRotate_right);
+    ui->editToolBar->addAction(ui->actionBlur);
 
     imageScene = new QGraphicsScene(this);
     ui->graphicsView->setScene(imageScene);
@@ -29,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionNext_Image, SIGNAL(triggered(bool)), this, SLOT(nextImage()));
     connect(ui->actionRotate_left, SIGNAL(triggered(bool)), this, SLOT(rotateLeft()));
     connect(ui->actionRotate_right, SIGNAL(triggered(bool)), this, SLOT(rotateRight()));
+    connect(ui->actionBlur, SIGNAL(triggered(bool)), this, SLOT(blurImage()));
 
     setupShortcuts();
 }
@@ -168,3 +170,9 @@ void MainWindow::setupShortcuts()
     shortcuts << Qt::Key_Down << Qt::Key_Right;
     ui->actionNext_Image->setShortcuts(shortcuts);
 }
+
+void MainWindow::blurImage()
+{
+    qDebug() << "Blurring the image!";
+}
+
