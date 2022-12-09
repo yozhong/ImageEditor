@@ -11,6 +11,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+find_package(OpenCV REQUIRED)
+
+if(OpenCV_FOUND)
+    include_directories(${OpenCV_INCLUDE_DIRS})
+    message(STATUS "OpenCV library status:")
+    message(STATUS "    version: ${OpenCV_VERSION}")
+    message(STATUS "    libraries: ${OpenCV_LIBS}")
+    message(STATUS "    include path: ${OpenCV_INCLUDE_DIRS}")
+endif()
 
 set(PROJECT_SOURCES
         main.cpp
@@ -42,7 +51,7 @@ else()
     endif()
 endif()
 
-target_link_libraries(ImageViewer PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(ImageViewer PRIVATE Qt${QT_VERSION_MAJOR}::Widgets ${OpenCV_LIBS})
 
 set_target_properties(ImageViewer PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

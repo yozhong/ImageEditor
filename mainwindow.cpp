@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
+#include "opencv2/opencv.hpp"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -173,6 +175,37 @@ void MainWindow::setupShortcuts()
 
 void MainWindow::blurImage()
 {
-    qDebug() << "Blurring the image!";
-}
+    if (currentImage == nullptr) {
+        QMessageBox::information(this, "Information", "No image to edit.");
+        return;
+    }
 
+    QImage image = currentImage->pixmap().toImage();
+    image = image.convertToFormat(QImage::Format_RGB888);
+    cv::Mat mat = cv::Mat(
+        image.height(),
+        image.width(),
+        CV_8UC3,
+        image.bits(),
+        image.bytesPerLine());
+
+    cv::blur(mat, mat, cv::Size(8, 8));
+
+    QImage image_blurred(
+        mat.data,
+        mat.cols,
+        mat.rows,
+        mat.step,
+        QImage::Format_RGB888);
+    QPixmap pixmap = QPixmap::fromImage(image_blurred);
+    imageScene->clear();
+    currentImage = imageScene->addPixmap(pixmap);
+    imageScene->update();
+
+    ui->graphicsView->resetTransform();
+    ui->graphicsView->setSceneRect(pixmap.rect());
+
+    QString status = QString("(editted image), %1x%2")
+        .arg(pixmap.width()).arg(pixmap.height());
+    ui->statusLabel->setText(status);
+}
