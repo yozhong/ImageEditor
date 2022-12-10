@@ -7,6 +7,9 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QRegularExpression>
+#include <QMap>
+
+#include "editor_plugin_interface.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -24,10 +27,12 @@ private:
     Ui::MainWindow *ui;
     void showImage(QString path);
     void setupShortcuts();
+    void loadPlugins();
 
     QGraphicsScene *imageScene;
     QGraphicsPixmapItem *currentImage;
     QString currentImagePath;
+    QMap<QString, EditorPluginInterface*> editPlugins;
 
 private slots:
     void openImage();
@@ -39,5 +44,6 @@ private slots:
     void rotateRight();
     void rotateLeft();
     void blurImage();
+    void pluginPerform();
 };
 #endif // MAINWINDOW_H
