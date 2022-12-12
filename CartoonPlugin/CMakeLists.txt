@@ -27,6 +27,6 @@ add_library(CartoonPlugin SHARED
   cartoon_plugin.h
 )
 
-target_link_libraries(CartoonPlugin PRIVATE Qt${QT_VERSION_MAJOR}::Core)
+target_link_libraries(CartoonPlugin PRIVATE Qt${QT_VERSION_MAJOR}::Core ${OpenCV_LIBS})
 
 target_compile_definitions(CartoonPlugin PRIVATE CARTOONPLUGIN_LIBRARY)

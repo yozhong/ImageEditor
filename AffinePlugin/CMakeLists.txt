@@ -27,6 +27,6 @@ add_library(AffinePlugin SHARED
   affine_plugin.h
 )
 
-target_link_libraries(AffinePlugin PRIVATE Qt${QT_VERSION_MAJOR}::Core)
+target_link_libraries(AffinePlugin PRIVATE Qt${QT_VERSION_MAJOR}::Core ${OpenCV_LIBS})
 
 target_compile_definitions(AffinePlugin PRIVATE AffinePlugin_LIBRARY)

@@ -27,6 +27,6 @@ add_library(RotatePlugin SHARED
   rotate_plugin.h
 )
 
-target_link_libraries(RotatePlugin PRIVATE Qt${QT_VERSION_MAJOR}::Core)
+target_link_libraries(RotatePlugin PRIVATE Qt${QT_VERSION_MAJOR}::Core ${OpenCV_LIBS})
 
 target_compile_definitions(RotatePlugin PRIVATE ROTATEPLUGIN_LIBRARY)

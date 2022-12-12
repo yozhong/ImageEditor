@@ -27,6 +27,6 @@ add_library(SharpenPlugin SHARED
   sharpen_plugin.h
 )
 
-target_link_libraries(SharpenPlugin PRIVATE Qt${QT_VERSION_MAJOR}::Core)
+target_link_libraries(SharpenPlugin PRIVATE Qt${QT_VERSION_MAJOR}::Core ${OpenCV_LIBS})
 
 target_compile_definitions(SharpenPlugin PRIVATE SHARPENPLUGIN_LIBRARY)
