@@ -17,7 +17,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->viewToolBar->addAction(ui->actionNext_Image);
     ui->viewToolBar->addAction(ui->actionRotate_left);
     ui->viewToolBar->addAction(ui->actionRotate_right);
-    ui->editToolBar->addAction(ui->actionBlur);
 
     imageScene = new QGraphicsScene(this);
     ui->graphicsView->setScene(imageScene);
@@ -33,7 +32,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionNext_Image, SIGNAL(triggered(bool)), this, SLOT(nextImage()));
     connect(ui->actionRotate_left, SIGNAL(triggered(bool)), this, SLOT(rotateLeft()));
     connect(ui->actionRotate_right, SIGNAL(triggered(bool)), this, SLOT(rotateRight()));
-    connect(ui->actionBlur, SIGNAL(triggered(bool)), this, SLOT(blurImage()));
 
     setupShortcuts();
     loadPlugins();
@@ -173,43 +171,6 @@ void MainWindow::setupShortcuts()
     shortcuts.clear();
     shortcuts << Qt::Key_Down << Qt::Key_Right;
     ui->actionNext_Image->setShortcuts(shortcuts);
-}
-
-void MainWindow::blurImage()
-{
-    if (currentImage == nullptr) {
-        QMessageBox::information(this, "Information", "No image to edit.");
-        return;
-    }
-
-    QImage image = currentImage->pixmap().toImage();
-    image = image.convertToFormat(QImage::Format_RGB888);
-    cv::Mat mat = cv::Mat(
-        image.height(),
-        image.width(),
-        CV_8UC3,
-        image.bits(),
-        image.bytesPerLine());
-
-    cv::blur(mat, mat, cv::Size(8, 8));
-
-    QImage image_blurred(
-        mat.data,
-        mat.cols,
-        mat.rows,
-        mat.step,
-        QImage::Format_RGB888);
-    QPixmap pixmap = QPixmap::fromImage(image_blurred);
-    imageScene->clear();
-    currentImage = imageScene->addPixmap(pixmap);
-    imageScene->update();
-
-    ui->graphicsView->resetTransform();
-    ui->graphicsView->setSceneRect(pixmap.rect());
-
-    QString status = QString("(editted image), %1x%2")
-        .arg(pixmap.width()).arg(pixmap.height());
-    ui->statusLabel->setText(status);
 }
 
 void MainWindow::loadPlugins()

@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QString>
-#include "opencv2/opencv.hpp"
+#include <opencv2/opencv.hpp>
 
 class EditorPluginInterface
 {

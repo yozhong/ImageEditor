@@ -43,7 +43,6 @@ private slots:
     void nextImage();
     void rotateRight();
     void rotateLeft();
-    void blurImage();
     void pluginPerform();
 };
 #endif // MAINWINDOW_H
